@@ -1,12 +1,10 @@
 plugins {
+    id 'org.springframework.boot' version '3.3.5'
     id 'java'
-    id 'org.springframework.boot' version '4.1.0'
-    id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.elastic.search'
+group = 'com.elastic'
 version = '0.0.1-SNAPSHOT'
-description = 'elastich-search'
 
 java {
     toolchain {
@@ -19,15 +17,25 @@ repositories {
 }
 
 dependencies {
+    // Gradle 9'a Spring Boot'un tüm kütüphane versiyon haritasını (BOM) açıkça dikte ediyoruz:
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.3.5')
+
+    // Web ve Elasticsearch bağımlılıkları
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.springframework.boot:spring-boot-starter-elasticsearch'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-elasticsearch-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+
+    // Source: https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation("org.projectlombok:lombok:1.18.42")
+    // Doğrudan versiyon belirterek indirme (Sürüm belirsizliği hatasını çözer)
+    implementation 'org.elasticsearch.client:elasticsearch-rest-client:8.11.1'
+
+    // Apache Core 5 kütüphanesi (Versiyonu ile birlikte)
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.4'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
