@@ -34,5 +34,19 @@ public class ElasticSearchService {
         return searchResponse;
     }
 
+    public SearchResponse<Product> searchByField(String fieldName, String value) throws IOException {
+        return elasticsearchClient.search(s -> s
+                        .index("perfect_products")
+                        .query(q -> q
+                                .match(m -> m
+                                        .field(fieldName)
+                                        .query(value)
+                                )
+                        ),
+                Product.class
+        );
+    }
+
+
 
 }
