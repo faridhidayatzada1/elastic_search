@@ -57,6 +57,27 @@ public class ProductController {
         return hits.stream().map(Hit::source).collect(Collectors.toList());
     }
 
+    @GetMapping("/fieldName")
+    public List<Product> searchProducts(
+            @RequestParam String field,
+            @RequestParam String value) throws IOException {
+
+        // Servisdən nəticəni alırıq
+        SearchResponse<Product> searchResponse = elasticSearchService.searchByField(field, value);
+        List<Hit<Product>> hits = searchResponse.hits().hits();
+
+        // ID null gəlməsin deyə real ID-ni set edirik
+        return hits.stream()
+                .map(hit -> {
+                    Product product = hit.source();
+                    if (product != null) {
+                        product.setId(hit.id());
+                    }
+                    return product;
+                })
+                .collect(Collectors.toList());
+    }
+
 
 
 }
