@@ -1,5 +1,6 @@
 package com.elastic.search.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -10,12 +11,13 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 
-@Document(indexName = "perfect_products") // Tamamen taze bir indeks adı
+@Document(indexName = "perfect_products")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
 
     @Id
     @JsonProperty("id")
+    @JsonAlias("_id")
     private String id;
 
     @Field(name = "name", type = FieldType.Text)

@@ -6,32 +6,24 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false # Local development üçün təhlükəsizliyi söndürürük
-      - xpack.license.self_generated.type=basic # Tamamilə pulsuz lisenziya rejimini aktiv edirik
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Kompüterinizin RAM-ını qorumaq üçün limit
+      - xpack.security.enabled=false
     ports:
-      - "127.0.0.1:9200:9200" # Təhlükəsizlik üçün portu yalnız local kompüterinizə bağlayırıq
-      - "127.0.0.1:9300:9300"
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data # Konteyner silinsə belə datalarınız silinməyəcək
+      - "9200:9200"
     networks:
       - elastic
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.11.1 # Versiyanı Elasticsearch ilə eyniləşdirdik
+    image: docker.elastic.co/kibana/kibana:8.11.1
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - XPACK_SECURITY_ENABLED=false
     ports:
-      - "127.0.0.1:5601:5601"
-    depends_on:
-      - elasticsearch
+      - "5601:5601"
     networks:
       - elastic
-
-volumes:
-  elasticsearch-data:
-    driver: local
+    depends_on:
+      - elasticsearch
 
 networks:
   elastic:

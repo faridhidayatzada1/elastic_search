@@ -42,12 +42,19 @@ public class ProductController {
     public List<Map> matchAll() throws IOException {
         SearchResponse<Map> searchResponse = elasticsearchClient.search(s -> s.query(q -> q.matchAll(m -> m)), Map.class);
 
-        // Bazadan gələn real JSON açarlarını konsola yazdırırıq
         searchResponse.hits().hits().forEach(hit -> {
             System.out.println("BAZADAKI REAL DATA: " + hit.source());
         });
 
-        return searchResponse.hits().hits().stream().map(h -> h.source()).collect(Collectors.toList());
+        return searchResponse.hits().hits().stream().map(Hit::source).collect(Collectors.toList());
+    }
+
+    @GetMapping("/matchAllProducts")
+    public List<Product> matchAllProducts() throws IOException {
+        SearchResponse<Product> searchResponse = elasticSearchService.matchAllProductServicesWithQuery();
+
+        List<Hit<Product>> hits = searchResponse.hits().hits();
+        return hits.stream().map(Hit::source).collect(Collectors.toList());
     }
 
 

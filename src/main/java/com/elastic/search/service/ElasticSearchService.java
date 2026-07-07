@@ -8,7 +8,6 @@ import com.elastic.search.util.ElasticSearchUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import static co.elastic.clients.elasticsearch._types.TransformBuilders.search;
@@ -25,7 +24,13 @@ public class ElasticSearchService {
     public SearchResponse<Product> matchAllServices() throws IOException {
         Supplier<Query> supplier = ElasticSearchUtil.supplier();
         SearchResponse<Product> searchResponse = elasticsearchClient.search(s -> s.query(supplier.get()), Product.class);
-        //System.out.println("Search Response: " + searchResponse);
+        return searchResponse;
+    }
+
+    public SearchResponse<Product> matchAllProductServicesWithQuery() throws IOException {
+        Supplier<Query> supplier = ElasticSearchUtil.supplier();
+        SearchResponse<Product> searchResponse = elasticsearchClient.
+                search(s -> s.index("perfect_products").query(supplier.get()), Product.class);
         return searchResponse;
     }
 
