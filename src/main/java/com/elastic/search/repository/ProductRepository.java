@@ -1,8 +1,10 @@
-package com.elastic.search.repository.elastic;
+package com.elastic.search.repository;
 
 import com.elastic.search.model.Product;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ElasticSearchRepository extends ElasticsearchRepository<Product, String> {
+@Repository
+public interface ProductRepository extends ElasticsearchRepository<Product, String> {
 
 }
